@@ -4,7 +4,7 @@ import time
 from urllib.parse import urlparse
 
 # Load CSV file
-df = pd.read_csv("test_15_domains.csv")  # Replace with your actual file
+df = pd.read_csv("test_150_domains.csv")  # Replace with your actual file
 
 # Function to fetch WHOIS data
 
@@ -82,10 +82,10 @@ for index, domain in enumerate(df["domain"], start=1):
     whois_data["domain"] = domain
     data_list.append(whois_data)
     
-    if index % 10 == 0:  # Print progress every 200 rows
+    if index % 15 == 0:  # Print progress every 200 rows
         print(f"Processed {index} domains...")
 
-    time.sleep(1)  # Respect rate limits
+    time.sleep(1.5)  # Respect rate limits
 
 
 # Convert results into DataFrame
