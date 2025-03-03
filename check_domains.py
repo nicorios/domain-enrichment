@@ -4,7 +4,7 @@ import time
 from urllib.parse import urlparse
 
 # Load CSV file
-df = pd.read_csv("domains_to_enrich.csv")  # Replace with your actual file
+df = pd.read_csv("test_15_domains.csv")  # Replace with your actual file
 
 # Function to fetch WHOIS data
 
