@@ -1,6 +1,7 @@
 import pandas as pd
 import requests
 import time
+import random
 from urllib.parse import urlparse
 
 # Load CSV file
@@ -11,17 +12,29 @@ df = pd.read_csv("df3.csv")  # Replace with your actual file
 import requests
 import time
 
-def fetch_whois_data(domain, retries=3, timeout=10):
+USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36"
+]
+
+session = requests.Session()
+
+def fetch_whois_data(domain, retries=5, timeout=10):
     url = f"https://rdap.verisign.com/com/v1/domain/{domain}"
 
     for attempt in range(1, retries + 1):
         try:
-            response = requests.get(url, timeout=timeout)
+            response = session.get(url, timeout=timeout, headers=headers)
             
             # Check for HTTP errors
             if response.status_code == 200:
                 data = response.json()
                 return data
+            elif response.status_code == 429:  # Too Many Requests
+                retry_after = int(response.headers.get("Retry-After", 10))
+                print(f"Rate limit hit. Sleeping for {retry_after} seconds...")
+                time.sleep(retry_after)
             else:
                 print(f"Error {response.status_code} for {domain}. Response: {response.text}")
 
@@ -34,8 +47,10 @@ def fetch_whois_data(domain, retries=3, timeout=10):
         except requests.exceptions.RequestException as e:
             print(f"Unexpected error for {domain} (Attempt {attempt}/{retries}): {e}")
 
-        # Wait before retrying (increase delay for each attempt)
-        time.sleep(5 * attempt)
+        # Exponential backoff with jitter
+        sleep_time = random.uniform(2, 5) * attempt
+        print(f"Retrying {domain} in {sleep_time:.2f} seconds...")
+        time.sleep(sleep_time)
 
     print(f"Skipping {domain} after {retries} failed attempts.")
     return None
@@ -86,7 +101,9 @@ for index, domain in enumerate(df["domain"], start=1):
         current_time = time.strftime("%Y-%m-%d %H:%M:%S")
         print(f"[{current_time}] Processed {index} domains...")
 
-    time.sleep(1)  # Respect rate limits
+    # Add a random delay (avoid detection)
+    sleep_time = random.uniform(1, 4)
+    time.sleep(sleep_time)
 
 
 # Convert results into DataFrame
