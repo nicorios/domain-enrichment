@@ -25,6 +25,7 @@ def fetch_whois_data(domain, retries=5, timeout=10):
 
     for attempt in range(1, retries + 1):
         try:
+            headers = {"User-Agent": random.choice(USER_AGENTS)}
             response = session.get(url, timeout=timeout, headers=headers)
             
             # Check for HTTP errors
