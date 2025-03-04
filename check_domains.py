@@ -4,7 +4,7 @@ import time
 from urllib.parse import urlparse
 
 # Load CSV file
-df = pd.read_csv("df2.csv")  # Replace with your actual file
+df = pd.read_csv("df3.csv")  # Replace with your actual file
 
 # Function to fetch WHOIS data
 
@@ -82,7 +82,7 @@ for index, domain in enumerate(df["domain"], start=1):
     whois_data["domain"] = domain
     data_list.append(whois_data)
     
-    if index % 200 == 0:  # Print progress every 200 rows
+    if index % 500 == 0 or index == 10:  # Print progress every 200 rows
         current_time = time.strftime("%Y-%m-%d %H:%M:%S")
         print(f"[{current_time}] Processed {index} domains...")
 
@@ -96,6 +96,6 @@ whois_df = pd.DataFrame(data_list)
 df = df.merge(whois_df, on="domain", how="left")
 
 # Save to CSV
-df.to_csv("df2_enriched.csv", index=False)
+df.to_csv("df3_enriched.csv", index=False)
 current_time = time.strftime("%Y-%m-%d %H:%M:%S")
 print(f"[{current_time}] Batch completed.csv")
