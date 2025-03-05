@@ -93,6 +93,7 @@ def process_domain(domain):
 
 # Iterate over domains and fetch WHOIS data
 data_list = []
+print("analyzing df4")
 for index, domain in enumerate(df["domain"], start=1):
     whois_data = process_domain(domain)
     whois_data["domain"] = domain
