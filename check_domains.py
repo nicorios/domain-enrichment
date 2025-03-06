@@ -5,7 +5,7 @@ import random
 from urllib.parse import urlparse
 
 # Load CSV file
-df = pd.read_csv("df11.csv")  # Replace with your actual file
+df = pd.read_csv("df12.csv")  # Replace with your actual file
 
 # Function to fetch WHOIS data
 
@@ -93,7 +93,7 @@ def process_domain(domain, retries=15):
 
 # Iterate over domains and fetch WHOIS data
 data_list = []
-print("analyzing df11")
+print("analyzing df12")
 for index, domain in enumerate(df["domain"], start=1):
     try:
         whois_data = process_domain(domain)
@@ -121,6 +121,6 @@ whois_df = pd.DataFrame(data_list)
 df = df.merge(whois_df, on="domain", how="left")
 
 # Save to CSV
-df.to_csv("df11_enriched.csv", index=False)
+df.to_csv("df12_enriched.csv", index=False)
 current_time = time.strftime("%Y-%m-%d %H:%M:%S")
 print(f"[{current_time}] Batch completed.csv")
