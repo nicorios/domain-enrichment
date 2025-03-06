@@ -5,7 +5,7 @@ import random
 from urllib.parse import urlparse
 
 # Load CSV file
-df = pd.read_csv("df7.csv")  # Replace with your actual file
+df = pd.read_csv("df4.csv")  # Replace with your actual file
 
 # Function to fetch WHOIS data
 
@@ -93,19 +93,25 @@ def process_domain(domain, retries=15):
 
 # Iterate over domains and fetch WHOIS data
 data_list = []
-print("analyzing df7")
+print("analyzing df4")
 for index, domain in enumerate(df["domain"], start=1):
-    whois_data = process_domain(domain)
-    whois_data["domain"] = domain
-    data_list.append(whois_data)
-    
-    if index % 500 == 0 or index == 10:  # Print progress every 500 rows
-        current_time = time.strftime("%Y-%m-%d %H:%M:%S")
-        print(f"[{current_time}] Processed {index} domains...")
+    try:
+        whois_data = process_domain(domain)
+        whois_data["domain"] = domain
+        data_list.append(whois_data)
+        
+        if index % 500 == 0 or index == 10:  # Print progress every 500 rows
+            current_time = time.strftime("%Y-%m-%d %H:%M:%S")
+            print(f"[{current_time}] Processed {index} domains...")
 
-    # Add a random delay (avoid detection)
-    sleep_time = random.uniform(3, 6)
-    time.sleep(sleep_time)
+        # Add a random delay (avoid detection)
+        sleep_time = random.uniform(3, 6)
+        time.sleep(sleep_time)
+    
+    except Exception as e:
+        print(f"Unexpected error processing {domain}: {e}")
+        print("Waiting 5 minutes before continuing with the next domain...")
+        time.sleep(300)  # Wait 5 minutes
 
 
 # Convert results into DataFrame
@@ -115,6 +121,6 @@ whois_df = pd.DataFrame(data_list)
 df = df.merge(whois_df, on="domain", how="left")
 
 # Save to CSV
-df.to_csv("df7_enriched.csv", index=False)
+df.to_csv("df4_enriched.csv", index=False)
 current_time = time.strftime("%Y-%m-%d %H:%M:%S")
 print(f"[{current_time}] Batch completed.csv")
