@@ -93,6 +93,11 @@ def process_domain(domain, retries=15):
                     "registrar_email": registrar_email,
                     "registrar_url": registrar_url,
                 }
+
+            elif response.status_code == 404:
+                print(f"Skipping {domain}: Not Found (404).")
+                return None  # **Skip retrying if 404**
+                
             elif response.status_code == 429:
                         retry_after = int(response.headers.get("Retry-After", 10))
                         print(f"Rate limit hit. Sleeping for {retry_after} seconds...")
@@ -108,7 +113,7 @@ def process_domain(domain, retries=15):
             print(f"Unexpected error for {domain} (Attempt {attempt}/{retries}): {e}")
 
         # Exponential backoff with jitter
-        sleep_time = random.uniform(2, 5) * attempt
+        sleep_time = random.uniform(1) * attempt
         print(f"Retrying {domain} in {sleep_time:.2f} seconds...")
         time.sleep(sleep_time)
 
