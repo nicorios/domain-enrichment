@@ -5,7 +5,7 @@ import random
 import requests
 
 # Load CSV file
-df = pd.read_csv("/whois/df3_2.csv")  # Replace with your actual file
+df = pd.read_csv("whois/df3_2.csv")  # Replace with your actual file
 
 USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
@@ -79,5 +79,5 @@ whois_df = pd.DataFrame(data_list)
 df = df.merge(whois_df, on="domain", how="left")
 
 # Save to CSV
-df.to_csv("df3_enriched.csv", index=False)
+df.to_csv("whois/df3_enriched.csv", index=False)
 print("WHOIS data collection completed and saved to df5_enriched.csv")
