@@ -46,15 +46,14 @@ def fetch_whois_data(domain, retries=5, delay_range=(2, 5)):
             print(f"WHOIS lookup failed for {domain} (Attempt {attempt}/{retries})")
         except Exception as e:
             print(f"Unexpected error fetching WHOIS data for {domain}: {e}")
+            if "429" in str(e):
+                print("Rate limit hit. Waiting for 5 minutes before retrying...")
+                time.sleep(300)  # Wait 5 minutes if rate limited
         
         if attempt < retries:
             sleep_time = random.uniform(*delay_range)
             print(f"Retrying {domain} in {sleep_time:.2f} seconds...")
             time.sleep(sleep_time)
-        
-        if "429" in str(e):
-            print("Rate limit hit. Waiting for 5 minutes before retrying...")
-            time.sleep(300)  # Wait 5 minutes if rate limited
     
     print(f"Skipping {domain} after {retries} failed attempts.")
     return {"domain": domain}
