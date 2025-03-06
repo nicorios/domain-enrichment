@@ -63,7 +63,7 @@ def fetch_whois_data(domain, retries=5, delay_range=(2, 5)):
 data_list = []
 print("Analyzing df3_2.csv")
 
-for index, domain in enumerate(df.head(5)["domain"], start=1):
+for index, domain in enumerate(df["domain"], start=1):
     whois_data = fetch_whois_data(domain)
     data_list.append(whois_data)
     
