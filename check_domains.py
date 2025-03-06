@@ -96,8 +96,8 @@ def process_domain(domain, retries=15):
 
             elif response.status_code == 404:
                 print(f"Skipping {domain}: Not Found (404).")
-                return None  # **Skip retrying if 404**
-                
+                return {}  # **Skip retrying if 404**
+
             elif response.status_code == 429:
                         retry_after = int(response.headers.get("Retry-After", 10))
                         print(f"Rate limit hit. Sleeping for {retry_after} seconds...")
