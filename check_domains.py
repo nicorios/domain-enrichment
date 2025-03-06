@@ -5,7 +5,7 @@ import random
 from urllib.parse import urlparse
 
 # Load CSV file
-df = pd.read_csv("df9.csv")  # Replace with your actual file
+df = pd.read_csv("df5.csv")  # Replace with your actual file
 
 # Function to fetch WHOIS data
 
@@ -59,41 +59,65 @@ def fetch_whois_data(domain, retries=15, timeout=10):
 
 def process_domain(domain, retries=15):
     url = f"https://rdap.verisign.com/com/v1/domain/{domain}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        data = fetch_whois_data(domain)
-        
-        # Extract key data points
-        registration_date = next((e["eventDate"] for e in data.get("events", []) if e["eventAction"] == "registration"), None)
-        last_updated = next((e["eventDate"] for e in data.get("events", []) if e["eventAction"] == "last changed"), None)
-        expiration_date = next((e["eventDate"] for e in data.get("events", []) if e["eventAction"] == "expiration"), None)
-        
-        registrar = next((e for e in data.get("entities", []) if "registrar" in e.get("roles", [])), None)
-        registrar_name = next((v[3] for v in registrar.get("vcardArray", [[], []])[1] if v[0] == "fn"), None) if registrar else None
-        
-        registrar_email = next((v[3] for e in registrar.get("entities", []) for v in e.get("vcardArray", [[], []])[1] if v[0] == "email"), None) if registrar else None
-        
-        if not registrar_email:
-            registrar_email = next((v[3] for v in registrar.get("vcardArray", [[], []])[1] if v[0] == "email"), None) if registrar else None
-        
-        registrar_url = None
-        if registrar_email:
-            parsed_email = registrar_email.split("@")[-1]
-            registrar_url = f"https://{parsed_email}"  # Convert email domain to URL
-        
-        return {
-            "registration_date": registration_date,
-            "last_updated": last_updated,
-            "expiration_date": expiration_date,
-            "registrar_name": registrar_name,
-            "registrar_email": registrar_email,
-            "registrar_url": registrar_url,
-        }
-    return {}
+
+    for attempt in range(1, retries + 1):
+        try:
+
+            response = requests.get(url)
+            if response.status_code == 200:
+                data = fetch_whois_data(domain)
+                
+                # Extract key data points
+                registration_date = next((e["eventDate"] for e in data.get("events", []) if e["eventAction"] == "registration"), None)
+                last_updated = next((e["eventDate"] for e in data.get("events", []) if e["eventAction"] == "last changed"), None)
+                expiration_date = next((e["eventDate"] for e in data.get("events", []) if e["eventAction"] == "expiration"), None)
+                
+                registrar = next((e for e in data.get("entities", []) if "registrar" in e.get("roles", [])), None)
+                registrar_name = next((v[3] for v in registrar.get("vcardArray", [[], []])[1] if v[0] == "fn"), None) if registrar else None
+                
+                registrar_email = next((v[3] for e in registrar.get("entities", []) for v in e.get("vcardArray", [[], []])[1] if v[0] == "email"), None) if registrar else None
+                
+                if not registrar_email:
+                    registrar_email = next((v[3] for v in registrar.get("vcardArray", [[], []])[1] if v[0] == "email"), None) if registrar else None
+                
+                registrar_url = None
+                if registrar_email:
+                    parsed_email = registrar_email.split("@")[-1]
+                    registrar_url = f"https://{parsed_email}"  # Convert email domain to URL
+                
+                return {
+                    "registration_date": registration_date,
+                    "last_updated": last_updated,
+                    "expiration_date": expiration_date,
+                    "registrar_name": registrar_name,
+                    "registrar_email": registrar_email,
+                    "registrar_url": registrar_url,
+                }
+            elif response.status_code == 429:
+                        retry_after = int(response.headers.get("Retry-After", 10))
+                        print(f"Rate limit hit. Sleeping for {retry_after} seconds...")
+                        time.sleep(retry_after)
+            else:
+                print(f"Error {response.status_code} for {domain}. Response: {response.text}")
+                
+        except requests.exceptions.ConnectionError as e:
+                    print(f"Connection error for {domain} (Attempt {attempt}/{retries}): {e}")
+                    time.sleep(10)  # Short delay before retry
+
+        except requests.exceptions.RequestException as e:
+            print(f"Unexpected error for {domain} (Attempt {attempt}/{retries}): {e}")
+
+        # Exponential backoff with jitter
+        sleep_time = random.uniform(2, 5) * attempt
+        print(f"Retrying {domain} in {sleep_time:.2f} seconds...")
+        time.sleep(sleep_time)
+
+    print(f"Skipping {domain} after {retries} failed attempts.")
+    return None
 
 # Iterate over domains and fetch WHOIS data
 data_list = []
-print("analyzing df9")
+print("analyzing df5")
 for index, domain in enumerate(df["domain"], start=1):
     try:
         whois_data = process_domain(domain)
@@ -121,6 +145,6 @@ whois_df = pd.DataFrame(data_list)
 df = df.merge(whois_df, on="domain", how="left")
 
 # Save to CSV
-df.to_csv("df9_enriched.csv", index=False)
+df.to_csv("df5_enriched.csv", index=False)
 current_time = time.strftime("%Y-%m-%d %H:%M:%S")
 print(f"[{current_time}] Batch completed.csv")
