@@ -57,7 +57,7 @@ def fetch_whois_data(domain, retries=15, timeout=10):
     return None
 
 
-def process_domain(domain, , retries=15):
+def process_domain(domain, retries=15):
     url = f"https://rdap.verisign.com/com/v1/domain/{domain}"
     response = requests.get(url)
     if response.status_code == 200:
