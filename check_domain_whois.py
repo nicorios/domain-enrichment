@@ -42,7 +42,7 @@ def fetch_whois_data(domain, retries=5, delay_range=(2, 5)):
                 "registrar_email": registrar_email,
                 "registrar_url": registrar_url
             }
-        except whois.parser.PywhoisError:
+        # except whois.parser.PywhoisError:
             # print(f"WHOIS lookup failed for {domain} (Attempt {attempt}/{retries})")
         except Exception as e:
             print(f"Unexpected error fetching WHOIS data for {domain}: {e}")
