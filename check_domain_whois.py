@@ -52,7 +52,6 @@ def fetch_whois_data(domain, retries=5, delay_range=(2, 5)):
         
         if attempt < retries:
             sleep_time = random.uniform(*delay_range)
-            print(f"Retrying {domain} in {sleep_time:.2f} seconds...")
             time.sleep(sleep_time)
     
     print(f"Skipping {domain} after {retries} failed attempts.")
