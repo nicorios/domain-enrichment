@@ -3,9 +3,10 @@ import whois
 import time
 import random
 import requests
+from datetime import timezone
 
 # Load CSV file
-df = pd.read_csv("disposables/disposables.csv")  # Replace with your actual file
+df = pd.read_csv("df5.csv")  # Replace with your actual file
 
 USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
@@ -22,9 +23,19 @@ def fetch_whois_data(domain, retries=5, delay_range=(2, 5)):
         try:
             w = whois.whois(domain)
             registration_date = w.creation_date[0] if isinstance(w.creation_date, list) else w.creation_date
-            last_updated = max(w.updated_date) if isinstance(w.updated_date, list) else w.updated_date
             expiration_date = w.expiration_date[0] if isinstance(w.expiration_date, list) else w.expiration_date
             registrar_name = w.registrar
+
+            # Ensure last_updated is a list and normalize timezone information
+            if isinstance(w.updated_date, list):
+                last_updated = [
+                    dt.replace(tzinfo=timezone.utc) if dt.tzinfo is None else dt
+                    for dt in w.updated_date
+                ]
+                last_updated = max(last_updated)  # Now safe to compare
+            else:
+                last_updated = w.updated_date.replace(tzinfo=timezone.utc) if w.updated_date and w.updated_date.tzinfo is None else w.updated_date
+
             
             # Prioritize registrar_email, fallback to emails
             registrar_email = w.registrar_email if hasattr(w, 'registrar_email') and w.registrar_email else None
@@ -43,13 +54,13 @@ def fetch_whois_data(domain, retries=5, delay_range=(2, 5)):
                 "registrar_url": registrar_url
             }
         except whois.parser.PywhoisError:
-            print(f"WHOIS lookup failed for {domain} (Attempt {attempt}/{retries})")
+            return {"domain": domain}
         except Exception as e:
             print(f"Unexpected error fetching WHOIS data for {domain}: {e}")
             if "429" in str(e):
                 print("Rate limit hit. Waiting for 5 minutes before retrying...")
                 time.sleep(300)  # Wait 5 minutes if rate limited
-        
+
         if attempt < retries:
             sleep_time = random.uniform(*delay_range)
             time.sleep(sleep_time)
@@ -59,7 +70,7 @@ def fetch_whois_data(domain, retries=5, delay_range=(2, 5)):
 
 # Process domains
 data_list = []
-print("Analyzing disposables.csv")
+print("Analyzing df5.csv")
 
 for index, domain in enumerate(df["domain"], start=1):
     whois_data = fetch_whois_data(domain)
@@ -77,5 +88,5 @@ whois_df = pd.DataFrame(data_list)
 df = df.merge(whois_df, on="domain", how="left")
 
 # Save to CSV
-df.to_csv("disposables/disposables.csv", index=False)
+df.to_csv("df5_enriched.csv", index=False)
 print("WHOIS data collection completed and saved to df5_enriched.csv")
