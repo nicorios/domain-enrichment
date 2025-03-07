@@ -57,7 +57,7 @@ def fetch_whois_data(domain, retries=5, delay_range=(2, 5)):
             return {"domain": domain}
         except Exception as e:
             print(f"Unexpected error fetching WHOIS data for {domain}: {e}")
-            if "429" in str(e):
+            if "429" in str(e) or "Connection reset by peer" in str(e) :
                 print("Rate limit hit. Waiting for 5 minutes before retrying...")
                 time.sleep(300)  # Wait 5 minutes if rate limited
 
