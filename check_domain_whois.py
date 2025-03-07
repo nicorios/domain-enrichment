@@ -6,7 +6,7 @@ import requests
 from datetime import timezone
 
 # Load CSV file
-df = pd.read_csv("df4.csv")  # Replace with your actual file
+df = pd.read_csv("df6.csv")  # Replace with your actual file
 
 USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
@@ -70,7 +70,7 @@ def fetch_whois_data(domain, retries=5, delay_range=(2, 5)):
 
 # Process domains
 data_list = []
-print("Analyzing df4.csv")
+print("Analyzing df6.csv")
 
 for index, domain in enumerate(df["domain"], start=1):
     whois_data = fetch_whois_data(domain)
@@ -88,5 +88,5 @@ whois_df = pd.DataFrame(data_list)
 df = df.merge(whois_df, on="domain", how="left")
 
 # Save to CSV
-df.to_csv("df4_enriched.csv", index=False)
+df.to_csv("df6_enriched.csv", index=False)
 print("WHOIS data collection completed and saved to df5_enriched.csv")
