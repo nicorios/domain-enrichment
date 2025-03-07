@@ -3,7 +3,7 @@ import whois
 import time
 import random
 import requests
-from datetime import timezone
+from datetime import datetime, timezone
 
 # Load CSV file
 df = pd.read_csv("disposables/disposables.csv")  # Replace with your actual file
