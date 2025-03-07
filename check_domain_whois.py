@@ -4,9 +4,10 @@ import time
 import random
 import requests
 from datetime import datetime, timezone
+import socket
 
 # Load CSV file
-df = pd.read_csv("disposables/disposables.csv")  # Replace with your actual file
+df = pd.read_csv("df4.csv")  # Replace with your actual file
 
 USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
@@ -64,6 +65,22 @@ def fetch_whois_data(domain, retries=5, delay_range=(2, 5)):
             }
         except whois.parser.PywhoisError:
             return {"domain": domain}
+        except socket.timeout:
+            print(f"Timeout error fetching WHOIS data for {domain}")
+            return {"domain": domain}
+        
+        except socket.gaierror:
+            print(f"DNS resolution failed for {domain} (Name or service not known)")
+            return {"domain": domain}
+        
+        except ConnectionRefusedError:
+            print(f"Connection refused for {domain}")
+            return {"domain": domain}
+        
+        except ConnectionResetError:
+            print(f"Connection reset by peer for {domain}")
+            return {"domain": domain}
+    
         except Exception as e:
             print(f"Unexpected error fetching WHOIS data for {domain}: {e}")
             if "429" in str(e) or "Connection reset by peer" in str(e) :
@@ -79,7 +96,7 @@ def fetch_whois_data(domain, retries=5, delay_range=(2, 5)):
 
 # Process domains
 data_list = []
-print("Analyzing disposables.csv")
+print("Analyzing df4.csv")
 
 for index, domain in enumerate(df["domain"], start=1):
     whois_data = fetch_whois_data(domain)
@@ -97,5 +114,5 @@ whois_df = pd.DataFrame(data_list)
 df = df.merge(whois_df, on="domain", how="left")
 
 # Save to CSV
-df.to_csv("disposables/disposables_enriched.csv", index=False)
-print("WHOIS data collection completed and saved to disposables_enriched.csv")
+df.to_csv("df4_enriched.csv", index=False)
+print("WHOIS data collection completed and saved to df4.csv")
