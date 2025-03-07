@@ -17,26 +17,35 @@ USER_AGENTS = [
 session = requests.Session()
 session.headers.update({"User-Agent": random.choice(USER_AGENTS)})
 
+def safe_parse_date(date_value):
+    """Ensure the date is a datetime object, converting from string if needed."""
+    if isinstance(date_value, list):  # If it's a list, process each item
+        date_value = [safe_parse_date(d) for d in date_value]
+        return max(date_value)  # Get the latest date if multiple
+
+    if isinstance(date_value, str):  # Convert string to datetime
+        try:
+            return datetime.strptime(date_value, "%Y-%m-%d %H:%M:%S")  # Adjust format as needed
+        except ValueError:
+            try:
+                return datetime.strptime(date_value, "%Y-%m-%d")  # Some WHOIS providers omit time
+            except ValueError:
+                return None  # Return None if format is unrecognized
+
+    if isinstance(date_value, datetime):  # If already datetime, ensure it has tzinfo
+        return date_value.replace(tzinfo=timezone.utc) if date_value.tzinfo is None else date_value
+
+    return None  # Return None for unexpected values
+
 def fetch_whois_data(domain, retries=5, delay_range=(2, 5)):
     """Fetch WHOIS data using the whois library with retries and random delays."""
     for attempt in range(1, retries + 1):
         try:
             w = whois.whois(domain)
-            registration_date = w.creation_date[0] if isinstance(w.creation_date, list) else w.creation_date
-            expiration_date = w.expiration_date[0] if isinstance(w.expiration_date, list) else w.expiration_date
+            registration_date = safe_parse_date(w.creation_date)
+            last_updated = safe_parse_date(w.updated_date)
+            expiration_date = safe_parse_date(w.expiration_date)
             registrar_name = w.registrar
-
-            # Ensure last_updated is a list and normalize timezone information
-            if isinstance(w.updated_date, list):
-                last_updated = [
-                    dt.replace(tzinfo=timezone.utc) if dt.tzinfo is None else dt
-                    for dt in w.updated_date
-                ]
-                last_updated = max(last_updated)  # Now safe to compare
-            else:
-                last_updated = w.updated_date.replace(tzinfo=timezone.utc) if w.updated_date and w.updated_date.tzinfo is None else w.updated_date
-
-            
             # Prioritize registrar_email, fallback to emails
             registrar_email = w.registrar_email if hasattr(w, 'registrar_email') and w.registrar_email else None
             if not registrar_email:
