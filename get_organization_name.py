@@ -6,6 +6,7 @@ import re
 import time
 from collections import Counter
 from datetime import datetime
+import validators
 
 def clean_and_split_title(title):
     parts = re.split(r"[-—|:^]", title)
@@ -96,6 +97,11 @@ def determine_best_name(domain, names):
 # Function to scrape website information and return only the best match
 def scrape_website_info(domain):
     url = f"https://{domain}"  # Assuming https://
+
+    if not validators.domain(domain):
+        print(f"Skipping invalid domain: {domain}")
+        return None, "Invalid Domain"
+
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
         "Accept-Language": "en-US,en;q=0.9",
