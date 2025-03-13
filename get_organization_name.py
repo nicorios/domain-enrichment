@@ -8,7 +8,7 @@ from collections import Counter
 from datetime import datetime
 
 def clean_and_split_title(title):
-    parts = re.split(r"[-—|:^]", title)
+    parts = re.split(r"[-—|:^,]", title)
 
     # Remove unwanted parts: "Home", "404", "Not Found", "Login"
     filtered_parts = [
@@ -20,7 +20,6 @@ def clean_and_split_title(title):
 
     return filtered_parts if filtered_parts else [None]
 
-
 # Function to extract the main domain (removes subdomains & TLD)
 def extract_main_domain(domain):
     match = re.match(r"^(?:www\.)?([^\.]+)", domain)  # Extracts only the main part before the first dot
@@ -30,6 +29,7 @@ def extract_main_domain(domain):
 def normalize_name(name):
     return name.lower().replace(" ", "") if name else None
 
+# Function to determine best site name
 def determine_best_name(domain, names):
     cleaned_domain = extract_main_domain(domain)
 
@@ -89,11 +89,9 @@ def determine_best_name(domain, names):
             elif value == most_common_name:
                 return names[key]
 
-
     return None  # If no match found, return None
 
-
-# Function to scrape website information
+# Function to scrape website information and return only the best match
 def scrape_website_info(domain):
     url = f"https://{domain}"  # Assuming https://
     headers = {
@@ -105,25 +103,17 @@ def scrape_website_info(domain):
         "Connection": "keep-alive"
     }
 
-    scraping_status_code = None
-    scraping_info = "Success"
-
     try:
         response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()  # Raise error if request fails
         scraping_status_code = response.status_code
-    except requests.exceptions.RequestException as e:
-        scraping_status_code = getattr(e.response, "status_code", "Error")
-        scraping_info = str(e)
-        return {
-            "domain": domain, "website_title": None,
-            "website_og": None, "website_schema": None, "best_site_name": None,
-            "scraping_status_code": scraping_status_code, "scraping_info": scraping_info
-        }
+    except requests.exceptions.RequestException:
+        scraping_status_code = "Error"
+        return None, scraping_status_code  # If an error occurs, return None
 
     soup = BeautifulSoup(response.text, "html.parser")
 
-    # Extract <title> tag and split into two parts
+    # Extract <title> tag and split into parts
     title_tag = soup.find("title")
     website_title = title_tag.text.strip() if title_tag else None
     title_parts = clean_and_split_title(website_title) if website_title else []
@@ -149,34 +139,29 @@ def scrape_website_info(domain):
         "website_og": website_og,
         "website_schema": website_schema
     }
-    best_site_name = determine_best_name(domain, names)
-
-    return {
-        "domain": domain, "website_title": title_parts,
-        "website_og": website_og, "website_schema": website_schema, "best_site_name": best_site_name,
-        "scraping_status_code": scraping_status_code, "scraping_info": scraping_info
-    }
+    return determine_best_name(domain, names), scraping_status_code
 
 # Load CSV file with domains
 df = pd.read_csv("dftest2.csv")  # Assuming a CSV with a "domain" column
 
-# Scrape each website and store results
-results = []
-start_time = time.time()
+# Add the new column for best match
+df["best_site_name"] = None
+df["scraping_status_code"] = None
 
 print("Analyzing dftest2.csv")
-for i, domain in enumerate(df["domain"], start=1):
-    results.append(scrape_website_info(domain))
+for i, (index, row) in enumerate(df.iterrows(), start=1):  # Ensure proper iteration
+    domain = row["domain"]  # Extract domain correctly
+    best_name, status_code = scrape_website_info(domain)
+    df.at[index, "best_site_name"] = best_name
+    df.at[index, "scraping_status_code"] = status_code
 
     # Print progress every 500 rows
-    if i % 10 == 0 or i == 1:
-        elapsed_time = time.time() - start_time
+    if i % 500 == 0 or i == 10:
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        print(f"📢 {current_time} - Processed {i} rows in {elapsed_time:.2f} seconds...")
+        print(f"📢 {current_time} - Processed {i} rows")
 
-# Convert to DataFrame
-df_results = pd.DataFrame(results)
 
-# Save results to CSV
-df.to_csv("dftest2_ready.csv", index=False)
-print("✅ Scraping complete. Results saved to dftest2_ready.csv.")
+# Save updated dataframe with the appended column
+df.to_csv("dftest2-ready.csv", index=False)
+
+print("✅ Scraping complete. Results saved to dftest2-ready.csv.")
