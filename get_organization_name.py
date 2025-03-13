@@ -118,35 +118,41 @@ def scrape_website_info(domain):
     if "text/html" not in content_type:
         return None, "Invalid Content-Type"
 
-    soup = BeautifulSoup(response.text, "html.parser")
+    try:
+        soup = BeautifulSoup(response.text, "html.parser")
 
-    # Extract <title> tag and split into parts
-    title_tag = soup.find("title")
-    website_title = title_tag.text.strip() if title_tag else None
-    title_parts = clean_and_split_title(website_title) if website_title else []
+        # Extract <title> tag and split into parts
+        title_tag = soup.find("title")
+        website_title = title_tag.text.strip() if title_tag else None
+        title_parts = clean_and_split_title(website_title) if website_title else []
 
-    # Extract Open Graph <meta property="og:site_name">
-    og_tag = soup.find("meta", property="og:site_name")
-    website_og = og_tag["content"] if og_tag else None
+        # Extract Open Graph <meta property="og:site_name">
+        og_tag = soup.find("meta", property="og:site_name")
+        website_og = og_tag["content"] if og_tag else None
 
-    # Extract JSON-LD schema name
-    website_schema = None
-    for script in soup.find_all("script", type="application/ld+json"):
-        try:
-            schema = json.loads(script.string)
-            if isinstance(schema, dict) and "name" in schema:
-                website_schema = schema["name"]
-                break
-        except json.JSONDecodeError:
-            continue
+        # Extract JSON-LD schema name
+        website_schema = None
+        for script in soup.find_all("script", type="application/ld+json"):
+            try:
+                schema = json.loads(script.string)
+                if isinstance(schema, dict) and "name" in schema:
+                    website_schema = schema["name"]
+                    break
+            except json.JSONDecodeError:
+                continue
 
-    # Determine best site name
-    names = {
-        "website_title_parts": title_parts,
-        "website_og": website_og,
-        "website_schema": website_schema
-    }
-    return determine_best_name(domain, names), scraping_status_code
+        # Determine best site name
+        names = {
+            "website_title_parts": title_parts,
+            "website_og": website_og,
+            "website_schema": website_schema
+        }
+        return determine_best_name(domain, names), scraping_status_code
+    
+    except Exception as e:
+        print(f"Unexpected error for {domain}: {e}")
+        return None, "Exception"
+
 
 # Load CSV file with domains
 df = pd.read_csv("df4.csv")  # Assuming a CSV with a "domain" column
