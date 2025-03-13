@@ -144,13 +144,13 @@ def scrape_website_info(domain):
     return determine_best_name(domain, names), scraping_status_code
 
 # Load CSV file with domains
-df = pd.read_csv("df4.csv")  # Assuming a CSV with a "domain" column
+df = pd.read_csv("df5.csv")  # Assuming a CSV with a "domain" column
 
 # Add the new column for best match
 df["best_site_name"] = None
 df["scraping_status_code"] = None
 
-print("Analyzing df4.csv")
+print("Analyzing df5.csv")
 for i, (index, row) in enumerate(df.iterrows(), start=1):  # Ensure proper iteration
     domain = row["domain"]  # Extract domain correctly
     best_name, status_code = scrape_website_info(domain)
@@ -164,6 +164,6 @@ for i, (index, row) in enumerate(df.iterrows(), start=1):  # Ensure proper itera
 
 
 # Save updated dataframe with the appended column
-df.to_csv("df4-ready.csv", index=False)
+df.to_csv("df5-ready.csv", index=False)
 
-print("✅ Scraping complete. Results saved to df4-ready.csv.")
+print("✅ Scraping complete. Results saved to df5-ready.csv.")
