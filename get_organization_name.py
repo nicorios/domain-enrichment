@@ -8,7 +8,7 @@ from collections import Counter
 from datetime import datetime
 
 def clean_and_split_title(title):
-    parts = re.split(r"[-—|:^,]", title)
+    parts = re.split(r"[-—|:^]", title)
 
     # Remove unwanted parts: "Home", "404", "Not Found", "Login"
     filtered_parts = [
@@ -20,6 +20,7 @@ def clean_and_split_title(title):
 
     return filtered_parts if filtered_parts else [None]
 
+
 # Function to extract the main domain (removes subdomains & TLD)
 def extract_main_domain(domain):
     match = re.match(r"^(?:www\.)?([^\.]+)", domain)  # Extracts only the main part before the first dot
@@ -29,7 +30,6 @@ def extract_main_domain(domain):
 def normalize_name(name):
     return name.lower().replace(" ", "") if name else None
 
-# Function to determine best site name
 def determine_best_name(domain, names):
     cleaned_domain = extract_main_domain(domain)
 
@@ -65,25 +65,35 @@ def determine_best_name(domain, names):
     # Count occurrences and find the most common value
     name_counts = Counter(filter(None, all_normalized_values))
     if name_counts:
+        # Check if all values appear exactly once
+        all_unique = all(count == 1 for count in name_counts.values())
+
+        if all_unique:
+            # Get all valid names within length constraints
+            valid_names = [name for name in all_normalized_values if 4 <= len(name) <= 30]
+
+            if valid_names:
+                # Return the shortest valid name
+                shortest_name = min(valid_names, key=len)
+                for key, value in normalized_names.items():
+                    if isinstance(value, list) and shortest_name in value:
+                        return names[key][value.index(shortest_name)]
+                    elif value == shortest_name:
+                        return names[key]
+
+        # Normal case: Return most common name
         most_common_name = name_counts.most_common(1)[0][0]
         for key, value in normalized_names.items():
             if isinstance(value, list) and most_common_name in value:
-                best_match = names[key][value.index(most_common_name)]
-                return best_match if 4 <= len(best_match) <= 30 else None  # Ensure length range
+                return names[key][value.index(most_common_name)]
             elif value == most_common_name:
-                best_match = names[key]
-                return best_match if 4 <= len(best_match) <= 30 else None  # Ensure length range
+                return names[key]
 
-    # Step 3: If no match found, and title is the only available source, pick the shortest valid title part
-    title_parts = names.get("website_title_parts", [])
-    if isinstance(title_parts, list):  # Ensure it's a list before processing
-        valid_title_parts = [part for part in title_parts if part and 4 <= len(part) <= 30]  # Exclude None values
-        if valid_title_parts:
-            return min(valid_title_parts, key=len)  # Return the shortest valid part
 
     return None  # If no match found, return None
 
-# Function to scrape website information and return only the best match
+
+# Function to scrape website information
 def scrape_website_info(domain):
     url = f"https://{domain}"  # Assuming https://
     headers = {
@@ -95,15 +105,25 @@ def scrape_website_info(domain):
         "Connection": "keep-alive"
     }
 
+    scraping_status_code = None
+    scraping_info = "Success"
+
     try:
         response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()  # Raise error if request fails
-    except requests.exceptions.RequestException:
-        return None  # If an error occurs, return None
+        scraping_status_code = response.status_code
+    except requests.exceptions.RequestException as e:
+        scraping_status_code = getattr(e.response, "status_code", "Error")
+        scraping_info = str(e)
+        return {
+            "domain": domain, "website_title": None,
+            "website_og": None, "website_schema": None, "best_site_name": None,
+            "scraping_status_code": scraping_status_code, "scraping_info": scraping_info
+        }
 
     soup = BeautifulSoup(response.text, "html.parser")
 
-    # Extract <title> tag and split into parts
+    # Extract <title> tag and split into two parts
     title_tag = soup.find("title")
     website_title = title_tag.text.strip() if title_tag else None
     title_parts = clean_and_split_title(website_title) if website_title else []
@@ -129,26 +149,34 @@ def scrape_website_info(domain):
         "website_og": website_og,
         "website_schema": website_schema
     }
-    return determine_best_name(domain, names)  # Return only best site name
+    best_site_name = determine_best_name(domain, names)
+
+    return {
+        "domain": domain, "website_title": title_parts,
+        "website_og": website_og, "website_schema": website_schema, "best_site_name": best_site_name,
+        "scraping_status_code": scraping_status_code, "scraping_info": scraping_info
+    }
 
 # Load CSV file with domains
-df = pd.read_csv("df_test.csv")  # Assuming a CSV with a "domain" column
+df = pd.read_csv("dftest2.csv")  # Assuming a CSV with a "domain" column
 
-# Add the new column for best match
-df["best_site_name"] = None
+# Scrape each website and store results
+results = []
+start_time = time.time()
 
-print("Analyzing df_test.csv")
-for i, (index, row) in enumerate(df.iterrows(), start=1):  # Ensure proper iteration
-    domain = row["domain"]  # Extract domain correctly
-    df.at[index, "best_site_name"] = scrape_website_info(domain)  # Write to correct index
+print("Analyzing dftest2.csv")
+for i, domain in enumerate(df["domain"], start=1):
+    results.append(scrape_website_info(domain))
 
     # Print progress every 500 rows
-    if i % 500 == 0 or i == 10:
+    if i % 10 == 0 or i == 1:
+        elapsed_time = time.time() - start_time
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        print(f"📢 {current_time} - Processed {i} rows")
+        print(f"📢 {current_time} - Processed {i} rows in {elapsed_time:.2f} seconds...")
 
+# Convert to DataFrame
+df_results = pd.DataFrame(results)
 
-# Save updated dataframe with the appended column
-df.to_csv("df_test_withnames.csv", index=False)
-
-print("✅ Scraping complete. Results saved to df_test_withnames.csv.")
+# Save results to CSV
+df.to_csv("dftest2_ready.csv", index=False)
+print("✅ Scraping complete. Results saved to dftest2_ready.csv.")
