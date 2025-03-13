@@ -8,7 +8,7 @@ from collections import Counter
 from datetime import datetime
 
 def clean_and_split_title(title):
-    parts = re.split(r"[-—|:^,]", title)
+    parts = re.split(r"[-—|:^]", title)
 
     # Remove unwanted parts: "Home", "404", "Not Found", "Login"
     filtered_parts = [
@@ -48,11 +48,11 @@ def determine_best_name(domain, names):
             if cleaned_domain in value:
                 original_index = value.index(cleaned_domain)  # Find the matching index
                 best_match = names[key][original_index]  # Get the original, unnormalized value
-                return best_match if 4 <= len(best_match) <= 30 else None  # Ensure length range
+                return best_match if 4 <= len(best_match) <= 35 else None  # Ensure length range
         else:
             if value == cleaned_domain:
                 best_match = names[key]  # Get the original, unnormalized name
-                return best_match if 4 <= len(best_match) <= 30 else None  # Ensure length range
+                return best_match if 4 <= len(best_match) <= 35 else None  # Ensure length range
 
     # Step 2: Flatten all values into a list for frequency counting
     all_normalized_values = []
@@ -70,7 +70,7 @@ def determine_best_name(domain, names):
 
         if all_unique:
             # Get all valid names within length constraints
-            valid_names = [name for name in all_normalized_values if 4 <= len(name) <= 30]
+            valid_names = [name for name in all_normalized_values if 4 <= len(name) <= 35]
 
             if valid_names:
                 # Return the shortest valid name
@@ -144,13 +144,13 @@ def scrape_website_info(domain):
     return determine_best_name(domain, names), scraping_status_code
 
 # Load CSV file with domains
-df = pd.read_csv("dftest2.csv")  # Assuming a CSV with a "domain" column
+df = pd.read_csv("df1.csv")  # Assuming a CSV with a "domain" column
 
 # Add the new column for best match
 df["best_site_name"] = None
 df["scraping_status_code"] = None
 
-print("Analyzing dftest2.csv")
+print("Analyzing df1.csv")
 for i, (index, row) in enumerate(df.iterrows(), start=1):  # Ensure proper iteration
     domain = row["domain"]  # Extract domain correctly
     best_name, status_code = scrape_website_info(domain)
@@ -164,6 +164,6 @@ for i, (index, row) in enumerate(df.iterrows(), start=1):  # Ensure proper itera
 
 
 # Save updated dataframe with the appended column
-df.to_csv("dftest2-ready.csv", index=False)
+df.to_csv("df1-ready.csv", index=False)
 
-print("✅ Scraping complete. Results saved to dftest2-ready.csv.")
+print("✅ Scraping complete. Results saved to df1-ready.csv.")
