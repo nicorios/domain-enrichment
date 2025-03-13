@@ -1,0 +1,101 @@
+domain,website_title,website_og,website_schema,best_site_name,scraping_status_code,scraping_info
+alfacaravan.it,[],,,,200,Success
+phimsllc.org,[],,,,200,Success
+tecnetinfo.com.br,[],,,,200,Success
+kuechen-team.de,,,,,Error,"('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))"
+theilinger.de,[],,,,200,Success
+phx.niddk.nih.gov,,,,,Error,"HTTPSConnectionPool(host='phx.niddk.nih.gov', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe757d700>: Failed to resolve 'phx.niddk.nih.gov' ([Errno -5] No address associated with hostname)""))"
+drewmemorial.org,,,,,Error,"HTTPSConnectionPool(host='drewmemorial.org', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe2a7ee70>: Failed to resolve 'drewmemorial.org' ([Errno -5] No address associated with hostname)""))"
+corewellhealth.org,[],,,,200,Success
+northernhealth.org,,,,,Error,"('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))"
+muhealth.org,['University of Missouri Health Care'],,MU Health Care,,200,Success
+sc5.so-net.ne.jp,,,,,Error,"HTTPSConnectionPool(host='sc5.so-net.ne.jp', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe2ad4e00>: Failed to resolve 'sc5.so-net.ne.jp' ([Errno -5] No address associated with hostname)""))"
+canby.k12.or.us,['Canby School District'],Home - Canby School District,,Canby School District,200,Success
+lancastergeneral.org,[],,,,200,Success
+istitutomartini.tv.it,['Istituto Tecnico Statale Economico e Tecnologico Arturo Martini Castelfranco Veneto'],,,,200,Success
+bung.holio.day,[],,,,200,Success
+kraichgauer-oelmuehle.de,[],,,,200,Success
+johnxxiiicc.org,,,,,Error,"HTTPSConnectionPool(host='johnxxiiicc.org', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1000)')))"
+fqku.undeadbank.com,,,,,Error,"HTTPSConnectionPool(host='fqku.undeadbank.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe255e720>: Failed to resolve 'fqku.undeadbank.com' ([Errno -5] No address associated with hostname)""))"
+thehiltgroup.org,,,,,404,404 Client Error: Not Found for url: https://thehiltgroup.org/
+strijkshop.be,['Poets Punt Anzegem – Dienstenchequebedrijf te Anzegem'],Poets Punt Anzegem – Dienstenchequebedrijf,Poets Punt Anzegem &#8211; Dienstenchequebedrijf,,200,Success
+o2mail.de,,,,,Error,"HTTPSConnectionPool(host='o2mail.de', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe255eed0>: Failed to resolve 'o2mail.de' ([Errno -5] No address associated with hostname)""))"
+acponline.org,"['American College of Physicians', 'Internal Medicine', 'ACP']",,,American College of Physicians,200,Success
+chas.org,[],,,,200,Success
+alice-dsl.net,,,,,Error,"HTTPSConnectionPool(host='alice-dsl.net', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x719fe255eed0>, 'Connection to alice-dsl.net timed out. (connect timeout=10)'))"
+clearyhoare.com.au,[],,,,200,Success
+unab.edu.co,,,,,Error,"HTTPSConnectionPool(host='unab.edu.co', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)')))"
+omnigraphics.net,[],,,,200,Success
+desertservices.net,"['Desert Services', 'Construction Site Services for Maricopa County']",Desert Services,,Desert Services,200,Success
+holdenbolster.com.au,[],,,,200,Success
+bhs1.org,,,,,Error,"HTTPSConnectionPool(host='bhs1.org', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe21fc2f0>: Failed to resolve 'bhs1.org' ([Errno -5] No address associated with hostname)""))"
+fortunallc.net,[],,,,200,Success
+giatec.nl,"['Giatec', 'Allround partner industriële techniek']",,,Giatec,200,Success
+alumni.unimaas.nl,,,,,Error,"HTTPSConnectionPool(host='alumni.unimaas.nl', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe1fc4c80>: Failed to resolve 'alumni.unimaas.nl' ([Errno -5] No address associated with hostname)""))"
+szymonsikora.pl,['Szymon Sikora'],,,Szymon Sikora,200,Success
+pnscorp.kr,,,,,Error,"HTTPSConnectionPool(host='pnscorp.kr', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1000)')))"
+diehl-es.de,,,,,Error,"HTTPSConnectionPool(host='diehl-es.de', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLError(1, '[SSL: TLSV1_ALERT_INTERNAL_ERROR] tlsv1 alert internal error (_ssl.c:1000)')))"
+canarycare.co.uk,['Canary Care'],Canary Care,Canary Care,Canary Care,200,Success
+sumitomo-warehouse.com.sg,,,,,Error,"HTTPSConnectionPool(host='sumitomo-warehouse.com.sg', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe1fc6060>: Failed to resolve 'sumitomo-warehouse.com.sg' ([Errno -5] No address associated with hostname)""))"
+sio.midco.net,,,,,Error,"HTTPSConnectionPool(host='sio.midco.net', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe1e97110>: Failed to resolve 'sio.midco.net' ([Errno -5] No address associated with hostname)""))"
+kardiologie-neusaess.de,"['Startseite', 'Kardiologicum Augsburg', 'Neusäß']",Kardiologicum Augsburg-Neusäß,,Startseite,200,Success
+biglog.com.br,,,,,Error,"HTTPSConnectionPool(host='biglog.com.br', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, ""[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'biglog.com.br'. (_ssl.c:1000)"")))"
+thecreativerefuge.video,,,,,Error,"HTTPSConnectionPool(host='thecreativerefuge.video', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe20773b0>: Failed to resolve 'thecreativerefuge.video' ([Errno -5] No address associated with hostname)""))"
+ferrisedc.org,[],,,,200,Success
+gmail.com.com,,,,,403,403 Client Error: Forbidden for url: https://gmail.com.com/
+bradking.biz,['Sign Up for Brad King Team at VanDyk Mortgage'],,,,200,Success
+orcon.net.nz,[],,,,200,Success
+glh.org,[],,,,200,Success
+ecmc.edu,"['ECMC Hospital', 'Buffalo, NY']","ECMC Hospital | Buffalo, NY",,ECMC Hospital,200,Success
+gov.texas.gov,"['Office of the Texas Governor', 'Greg Abbott']",,,Office of the Texas Governor,200,Success
+totalhealthcare.org,['Total Health Care'],Total Health Care,,Total Health Care,200,Success
+sorsys.ca,"['Sorsys Technologies', 'Custom Automation Solutions']",,,Sorsys Technologies,200,Success
+iskra-zmils.com.pl,[],,,,200,Success
+goon.edu.my,[],,,,200,Success
+liftagency.co,[],,,,200,Success
+firstech.net,[],,,,200,Success
+hs-furtwangen.de,"['Hochschule Furtwangen', 'Baden', 'Württemberg']",Hochschule Furtwangen,,Hochschule Furtwangen,200,Success
+freewill.in,[],,,,200,Success
+alastudents.org,,,,,Error,"HTTPSConnectionPool(host='alastudents.org', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe221f290>: Failed to resolve 'alastudents.org' ([Errno -5] No address associated with hostname)""))"
+sun.ac.za,,,,,Error,"HTTPSConnectionPool(host='sun.ac.za', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe26c6f90>: Failed to resolve 'sun.ac.za' ([Errno -5] No address associated with hostname)""))"
+mail.nih.gov,,,,,Error,"HTTPSConnectionPool(host='mail.nih.gov', port=443): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x719fe26c5a60>: Failed to establish a new connection: [Errno 101] Network is unreachable'))"
+student.dls.org,,,,,Error,"HTTPSConnectionPool(host='student.dls.org', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe26c6a80>: Failed to resolve 'student.dls.org' ([Errno -5] No address associated with hostname)""))"
+ummc.edu.my,['Official Portal University Malaya Medical Centre'],,,,200,Success
+afi.org,"['Armed Forces Insurance', 'Armed Forces Insurance']",,,Armed Forces Insurance,200,Success
+teachfirst.org.uk,"['Helping every child fulfil their potential', 'Teach First']",,,Teach First,200,Success
+sbceo.org,[],,,,200,Success
+uhbc.us,[],,,,200,Success
+gbn.de,"['GBN Systems', 'Kompetenzen, Schwerpunkte und Ideenwerk']",GBN Systems GmbH,,GBN Systems,200,Success
+rapidprofitmasters.info,['Coming Soon'],,,Coming Soon,200,Success
+ebrschools.org,['EBR Schools'],EBR Schools,,EBR Schools,200,Success
+skidmore.edu,,,,,Error,"HTTPSConnectionPool(host='skidmore.edu', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, ""[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'skidmore.edu'. (_ssl.c:1000)"")))"
+ultimatemedical.edu,[],,,,200,Success
+centyrylink.net,[],,,,200,Success
+snack-goind.de,[],,,,200,Success
+bcfe.ie,[],,,,200,Success
+bjc.org,['BJC HealthCare'],,,BJC HealthCare,200,Success
+acaeagles.org,[],,,,200,Success
+dawnmccoy.net,,,,,Error,"HTTPSConnectionPool(host='dawnmccoy.net', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1000)')))"
+commerce.fl.gov,,,,,Error,"HTTPSConnectionPool(host='commerce.fl.gov', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe1b943b0>: Failed to resolve 'commerce.fl.gov' ([Errno -5] No address associated with hostname)""))"
+brllsouth.net,,,,,Error,"HTTPSConnectionPool(host='brllsouth.net', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe1b94d10>: Failed to resolve 'brllsouth.net' ([Errno -5] No address associated with hostname)""))"
+triaxis.pt,['Triaxis Lda.'],,,Triaxis Lda.,200,Success
+mail.usf.edu,,,,,Error,"HTTPSConnectionPool(host='mail.usf.edu', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe171a930>: Failed to resolve 'mail.usf.edu' ([Errno -5] No address associated with hostname)""))"
+actionintl.org,[],,,,200,Success
+tecguanajuato.edu.mx,,,,,Error,"HTTPSConnectionPool(host='tecguanajuato.edu.mx', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe19eb3e0>: Failed to resolve 'tecguanajuato.edu.mx' ([Errno -5] No address associated with hostname)""))"
+willowwellnesscenter.org,['Willow Wellness Center'],Willow Wellness Center,,Willow Wellness Center,200,Success
+coinnect.us,"['Coinnect', 'The Crypto POS for Businesses']",,,Coinnect,200,Success
+meinmeier.de,,,,,Error,"HTTPSConnectionPool(host='meinmeier.de', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLError(1, '[SSL: TLSV1_ALERT_INTERNAL_ERROR] tlsv1 alert internal error (_ssl.c:1000)')))"
+tk.hyway-x.com,,,,,Error,"HTTPSConnectionPool(host='tk.hyway-x.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe2319340>: Failed to resolve 'tk.hyway-x.com' ([Errno -5] No address associated with hostname)""))"
+amserv.de,"['AMServ', 'Service & Reparatur von Elektromotoren und Generatoren']",,AMServ GmbH & Co KG,AMServ,200,Success
+oxfordschools.org,,,,,406,406 Client Error: Not Acceptable for url: https://www.oxfordschools.org/
+blub.net,[],,,,200,Success
+hotmail.se,['Your request has been blocked. This could be\r\n                        due to several reasons.'],,,,200,Success
+prestigeoptix.de,,,,,503,503 Server Error: Service Unavailable for url: https://prestigeoptix.de/
+navicom24.de,['Navicom24 is under construction'],,,,200,Success
+trueperformance.net,,,,,Error,"HTTPSConnectionPool(host='trueperformance.net', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, ""[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'trueperformance.net'. (_ssl.c:1000)"")))"
+seagoville.us,"['Seagoville, TX', 'Official Website', 'Official Website']",,,Official Website,200,Success
+thehomechoice.net,[],,,,200,Success
+contracosta.edu,['Contra Costa College'],Contra Costa College,,Contra Costa College,200,Success
+outloock.es,,,,,Error,"HTTPSConnectionPool(host='outloock.es', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe1cdb230>: Failed to resolve 'outloock.es' ([Errno -5] No address associated with hostname)""))"
+templewines.eu,[],,,,200,Success
+ug.ab-inbev.com,,,,,Error,"HTTPSConnectionPool(host='ug.ab-inbev.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x719fe1cdbfe0>: Failed to resolve 'ug.ab-inbev.com' ([Errno -5] No address associated with hostname)""))"
