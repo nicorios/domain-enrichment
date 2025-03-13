@@ -80,6 +80,8 @@ def determine_best_name(domain, names):
                         return names[key][value.index(shortest_name)]
                     elif value == shortest_name:
                         return names[key]
+            
+            return None
 
         # Normal case: Return most common name
         most_common_name = name_counts.most_common(1)[0][0]
