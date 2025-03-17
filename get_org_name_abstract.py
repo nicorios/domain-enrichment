@@ -134,11 +134,11 @@ def fetch_website_info(domain):
     }
     return determine_best_name(domain, names), response.status_code
 
-df = pd.read_csv("missing_1.csv")
+df = pd.read_csv("missing_10.csv")
 df["best_site_name"] = None
 df["scraping_status_code"] = None
 
-print("Analyzing missing_1.csv")
+print("Analyzing missing_10.csv")
 for i, (index, row) in enumerate(df.iterrows(), start=1):
     domain = row["domain"]
     best_name, status_code = fetch_website_info(domain)
@@ -147,5 +147,5 @@ for i, (index, row) in enumerate(df.iterrows(), start=1):
     if i % 500 == 0 or i == 10:
         print(f"📢 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} - Processed {i} rows")
 
-df.to_csv("missing_1-ready.csv", index=False)
-print("✅ Scraping complete. Results saved to missing_1-ready.csv.")
+df.to_csv("missing_10-ready.csv", index=False)
+print("✅ Scraping complete. Results saved to missing_10-ready.csv.")
