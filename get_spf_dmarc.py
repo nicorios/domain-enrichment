@@ -78,10 +78,10 @@ def is_live_site(domain):
             continue  # Try next URL if one fails
     return False
 
-df = pd.read_csv("df7.csv")
+df = pd.read_csv("df8.csv")
 
 # Process each row and print progress every 500 rows
-print("Analyzing df7.csv")
+print("Analyzing df8.csv")
 for i, domain in enumerate(df['domain']):
     df.at[i, 'is_spf_strict'] = get_spf_strict(domain)
     df.at[i, 'is_dmarc_enforced'] = get_dmarc_policy(domain)
@@ -92,5 +92,5 @@ for i, domain in enumerate(df['domain']):
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print(f"📢 {current_time} - Processed {i+1} rows")
 
-df.to_csv("df7-ready.csv", index = False)
-print("✅ Results saved to df7-ready.csv.")
+df.to_csv("df8-ready.csv", index = False)
+print("✅ Results saved to df8-ready.csv.")
