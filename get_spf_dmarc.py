@@ -64,24 +64,34 @@ def get_dmarc_policy(domain):
     except dns.exception.DNSException as e:
         return False
 
+import requests
+
 def is_live_site(domain):
     """Check if a domain has a live website by making an HTTP request."""
     urls = [f"https://{domain}", f"http://{domain}"]  # Try both HTTPS and HTTP
     for url in urls:
         try:
-            response = requests.get(url, timeout=5, allow_redirects=False)  # 5-second timeout
+            response = requests.get(
+                url, 
+                timeout=5, 
+                allow_redirects=False, 
+                headers={'Accept-Encoding': 'identity'}  # Disable gzip encoding
+            )
             if 200 <= response.status_code < 400:  # Site is accessible
                 return True
         except requests.TooManyRedirects:
-            return True
-        except (requests.ConnectionError, requests.Timeout):
-            continue  # Try next URL if one fails
+            return True  # Redirect loop, but site exists
+        except requests.exceptions.ContentDecodingError:
+            print(f"Decoding error for domain: {domain}")
+        except requests.exceptions.RequestException as e:
+            print(f"Request error for {domain}: {e}")  # Print the broken domain
     return False
 
-df = pd.read_csv("df10.csv")
+
+df = pd.read_csv("df6.csv")
 
 # Process each row and print progress every 500 rows
-print("Analyzing df10.csv")
+print("Analyzing df6.csv")
 for i, domain in enumerate(df['domain']):
     df.at[i, 'is_spf_strict'] = get_spf_strict(domain)
     df.at[i, 'is_dmarc_enforced'] = get_dmarc_policy(domain)
@@ -92,5 +102,5 @@ for i, domain in enumerate(df['domain']):
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print(f"📢 {current_time} - Processed {i+1} rows")
 
-df.to_csv("df10-ready.csv", index = False)
-print("✅ Results saved to df10-ready.csv.")
+df.to_csv("df6-ready.csv", index = False)
+print("✅ Results saved to df6-ready.csv.")
