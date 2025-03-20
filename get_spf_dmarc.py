@@ -73,7 +73,7 @@ def is_live_site(domain):
         try:
             response = requests.get(
                 url, 
-                timeout=5, 
+                timeout=10, 
                 allow_redirects=False, 
                 headers={'Accept-Encoding': 'identity'}  # Disable gzip encoding
             )
@@ -90,10 +90,10 @@ def is_live_site(domain):
     return False
 
 
-df = pd.read_csv("test2.csv")
+df = pd.read_csv("df1.csv")
 
 # Process each row and print progress every 500 rows
-print("Analyzing test2.csv")
+print("Analyzing df1.csv")
 for i, domain in enumerate(df['domain']):
     df.at[i, 'is_spf_strict'] = get_spf_strict(domain)
     df.at[i, 'is_dmarc_enforced'] = get_dmarc_policy(domain)
@@ -104,5 +104,5 @@ for i, domain in enumerate(df['domain']):
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print(f"📢 {current_time} - Processed {i+1} rows")
 
-df.to_csv("test-ready2.csv", index = False)
-print("✅ Results saved to test-ready2.csv.")
+df.to_csv("df1-ready.csv", index = False)
+print("✅ Results saved to df1-ready.csv.")
