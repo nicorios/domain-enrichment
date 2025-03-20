@@ -82,9 +82,11 @@ def is_live_site(domain):
         except requests.TooManyRedirects:
             return True  # Redirect loop, but site exists
         except requests.exceptions.ContentDecodingError:
-            print(f"Decoding error for domain: {domain}")
+            # print(f"Decoding error for domain: {domain}")
+            return False
         except requests.exceptions.RequestException as e:
-            print(f"Request error for {domain}: {e}")  # Print the broken domain
+            # print(f"Request error for {domain}: {e}")  # Print the broken domain
+            return False
     return False
 
 
