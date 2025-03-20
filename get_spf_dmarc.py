@@ -90,10 +90,10 @@ def is_live_site(domain):
     return False
 
 
-df = pd.read_csv("test.csv")
+df = pd.read_csv("test2.csv")
 
 # Process each row and print progress every 500 rows
-print("Analyzing test.csv")
+print("Analyzing test2.csv")
 for i, domain in enumerate(df['domain']):
     df.at[i, 'is_spf_strict'] = get_spf_strict(domain)
     df.at[i, 'is_dmarc_enforced'] = get_dmarc_policy(domain)
