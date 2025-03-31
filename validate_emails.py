@@ -19,7 +19,7 @@ def get_email_validation(email):
 # Iterate over the DataFrame and call the API
 print("Analyzing company_emails.csv")
 for index, row in df.iterrows():
-    email = row['email']
+    email = row['$email']
     api_data = get_email_validation(email)
     
     if api_data:
