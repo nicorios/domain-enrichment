@@ -5,7 +5,7 @@ import time
 df = pd.read_csv("company_emails.csv")
 
 # API URL and key
-api_url = "https://emailvalidation.abstractapi.com/v1/?api_key=3600f5062ee745da9a53ec9556aad7b9&email="
+api_url = "https://emailvalidation.abstractapi.com/v1/?api_key=API_KEY&email="
 
 # Function to get email validation data
 def get_email_validation(email):
