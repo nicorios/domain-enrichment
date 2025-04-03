@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 import socket
 
 # Load CSV file
-df = pd.read_csv("second_pass/df_10.csv")  # Replace with your actual file
+# df = pd.read_csv("second_pass/df_10.csv")  # Replace with your actual file
 
 USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
@@ -56,9 +56,9 @@ def fetch_whois_data(domain, retries=5, delay_range=(2, 5)):
             
             return {
                 "domain": domain,
-                "registration_date": registration_date,
-                "last_updated": last_updated,
-                "expiration_date": expiration_date,
+                "registration_date": registration_date.strftime("%Y-%m-%d") if registration_date else None,
+                "last_updated": last_updated.strftime("%Y-%m-%d") if last_updated else None,
+                "expiration_date": expiration_date.strftime("%Y-%m-%d") if expiration_date else None,
                 "registrar_name": registrar_name,
                 "registrar_email": registrar_email,
                 "registrar_url": registrar_url
@@ -94,25 +94,25 @@ def fetch_whois_data(domain, retries=5, delay_range=(2, 5)):
     print(f"Skipping {domain} after {retries} failed attempts.")
     return {"domain": domain}
 
-# Process domains
-data_list = []
-print("Analyzing df10.csv")
 
-for index, domain in enumerate(df["domain"], start=1):
-    whois_data = fetch_whois_data(domain)
-    data_list.append(whois_data)
-    
-    if index % 500 == 0 or index == 10:
-        print(f"Processed {index} domains...")
-    
-    time.sleep(random.uniform(1, 3))  # Short delay to avoid being flagged
+def enrich_whois_df(df):
+    print("🏁 Whois Checker")
+    data_list = []
 
-# Convert results into DataFrame
-whois_df = pd.DataFrame(data_list)
+    for index, domain in enumerate(df["domain"], start=1):
+        whois_data = fetch_whois_data(domain)
+        data_list.append(whois_data)
+        
+        if index % 500 == 0 or index == 10:
+            print(f"Processed {index} domains...")
+        
+        time.sleep(random.uniform(1, 3))  # Short delay to avoid being flagged
 
-# Merge with original DataFrame
-df = df.merge(whois_df, on="domain", how="left")
+    # Convert results into DataFrame
+    whois_df = pd.DataFrame(data_list)
 
-# Save to CSV
-df.to_csv("second_pass/df_10_enriched.csv", index=False)
-print("WHOIS data collection completed and saved to df10.csv")
+    # Merge with original DataFrame
+    df = df.merge(whois_df, on="domain", how="left")
+
+    print("✅ Whois Checker")
+    return df
