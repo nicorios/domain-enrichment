@@ -6,7 +6,7 @@ import time
 df = pd.read_csv("ips_to_enrich.csv")
 
 # API URL and key
-api_url = "https://ip-intelligence.abstractapi.com/v1/?api_key=ffd624a4b1854bf7896113c1459646e8&ip_address="
+api_url = "https://ip-intelligence.abstractapi.com/v1/?api_key=API_KEY&ip_address="
 
 # Function to get IP intelligence data
 def get_ip_intelligence(ip):
