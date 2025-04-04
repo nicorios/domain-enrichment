@@ -7,7 +7,7 @@ import requests
 
 load_dotenv()
 
-def send_file_to_slack(df, channel="#high-overage-users"):
+def send_file_to_slack(df, channel="#daydream-abstractapi"):
     filepath = "enriched_domains.csv"
     df.to_csv(filepath, index=False)
     slack_token = os.getenv("SLACK_USER_OAUTH_TOKEN")

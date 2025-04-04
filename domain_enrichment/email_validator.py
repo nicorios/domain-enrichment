@@ -1,10 +1,16 @@
 import pandas as pd
 import requests
 import time
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Loads variables from .env
+
+api_key = os.getenv("ABSTRACT_API_KEY")
 
 # Function to get email validation data
 def get_email_validation(email):
-    api_url = "https://emailvalidation.abstractapi.com/v1/?api_key=3600f5062ee745da9a53ec9556aad7b9&email="
+    api_url = f"https://emailvalidation.abstractapi.com/v1/?api_key={api_key}&email="
 
     # Make the API call
     response = requests.get(api_url + email)
