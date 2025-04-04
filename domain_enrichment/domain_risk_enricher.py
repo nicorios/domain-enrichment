@@ -65,6 +65,8 @@ def enrich_domain_risk(df):
                 return "GandiMail"
             elif ".temp-mail." in mx_lower:
                 return "Temp-Mail"
+            elif "emailfake.com" in mx_lower:
+                return "EmailFake"
 
         return "Unknown"
 

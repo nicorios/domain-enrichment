@@ -1,8 +1,10 @@
+#!/usr/bin/env python3
 from domain_fetcher import get_new_domains
 from whois_checker import enrich_whois_df
 from dns_checker import enrich_dns
 from email_validator import validate_email
 from domain_risk_enricher import enrich_domain_risk
+from send_output_to_slack import send_file_to_slack
 import pandas as pd
 
 # Step 1: Get new domains
@@ -23,6 +25,5 @@ df = validate_email(df)
 # Step 5: Enrich risk insights
 df = enrich_domain_risk(df)
 
-# # Step 6: Save results
-df.to_csv("enriched_domains_test.csv", index=False)
-# print("✅ Domain enrichment completed.")
+# Step 6: Send results to Slack
+send_file_to_slack(df)
