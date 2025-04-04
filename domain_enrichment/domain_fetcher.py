@@ -3,6 +3,8 @@ import time
 import pandas as pd
 
 def get_new_domains():
+    print(f"🏁 [{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Starting domain enrichment")
+
     url = "https://raw.githubusercontent.com/7c/fakefilter/refs/heads/main/json/data_version2.json"
     now = int(time.time())
     seven_days_ago = now - 604800
