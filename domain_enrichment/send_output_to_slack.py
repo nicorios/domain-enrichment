@@ -54,7 +54,7 @@ def send_file_to_slack(df, channel="#daydream-abstractapi"):
         # Step 5: Post message
         client.chat_postMessage(
             channel=channel,
-            text=f"📎 Hi team. Here is the list of new disposable domains listed in the past 7 days to create new pages. {datetime.now().strftime('%B %d, %Y')}\n<{permalink}|Download CSV>"
+            text=f"📎 Hi team. Here is the list of new disposable domains to create new pages. {datetime.now().strftime('%B %d, %Y')}\n<{permalink}|Download CSV>"
         )
 
         print("✅ File shared successfully in Slack.")

@@ -8,7 +8,7 @@ def get_new_domains():
 
     url = "https://raw.githubusercontent.com/7c/fakefilter/refs/heads/main/json/data_version2.json"
     now = int(time.time())
-    seven_days_ago = now - 604800
+    seven_days_ago = now - 259200
 
     response = requests.get(url)
     data = response.json()
